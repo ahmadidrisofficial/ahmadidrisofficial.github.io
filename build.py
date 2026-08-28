@@ -22,6 +22,7 @@ NAV = [
     ("work.html", "Work"),
     ("case-studies.html", "Case studies"),
     ("speaking.html", "Speaking"),
+    ("pathways.html", "Pathways"),
     ("writing.html", "Notes"),
     ("about.html", "About"),
     ("contact.html", "Contact"),
@@ -105,6 +106,7 @@ TEMPLATE = """<!DOCTYPE html>
           <li><a href="%(root)swork.html">Work and impact</a></li>
           <li><a href="%(root)scase-studies.html">Case studies</a></li>
           <li><a href="%(root)sspeaking.html">Speaking and advisory</a></li>
+          <li><a href="%(root)spathways.html">Pathways weekly</a></li>
           <li><a href="%(root)swriting.html">Notes and research</a></li>
         </ul>
       </div>
@@ -168,7 +170,7 @@ def sitemap_and_robots():
     pages = ["", "about.html", "work.html", "case-studies.html",
              "case-studies/allon-fasaha.html", "case-studies/techxplorer.html",
              "case-studies/digital-skills.html", "case-studies/higher-education.html",
-             "speaking.html", "writing.html", "contact.html", "privacy.html"]
+             "speaking.html", "pathways.html", "writing.html", "contact.html", "privacy.html"]
     urls = "\n".join(
         "  <url><loc>%s/%s</loc></url>" % (BASE_URL, p) for p in pages)
     with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
