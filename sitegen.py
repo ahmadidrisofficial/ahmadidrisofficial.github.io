@@ -19,6 +19,11 @@ import sys
 
 
 def main():
+    try:
+        make_gallery()
+    except Exception as exc:
+        print("gallery generation skipped:", exc)
+
     env = dict(os.environ)
     env.setdefault("BASE_URL", "https://www.ahmadidrisofficial.com")
     subprocess.check_call([sys.executable, "build.py"], env=env)
@@ -53,10 +58,95 @@ def main():
         if p.endswith(".html"):
             shutil.copy(os.path.join("case-studies", p),
                         os.path.join(out, "case-studies", p))
-    shutil.copytree("assets", os.path.join(out, "assets"))
+    shutil.copytree("assets", os.path.join(out, "assets"),
+                    ignore=shutil.ignore_patterns("gallery-b64"))
     for extra in ["favicon.svg", "sitemap.xml", "robots.txt"]:
         shutil.copy(extra, os.path.join(out, extra))
     print("site written to _site/")
+
+
+def caption_from(name):
+    stem = os.path.splitext(name)[0]
+    words = stem.replace("-", " ").replace("_", " ").split()
+    words = [w for w in words if not (w.isdigit() and len(w) in (2, 4, 8))]
+    text = " ".join(words).strip()
+    return (text[:1].upper() + text[1:]) if text else "Photograph"
+
+
+def make_gallery():
+    """Build the gallery page from photos in assets/img/gallery/.
+
+    Also accepts text files in assets/img/gallery-b64/ (base64 of an
+    image, filename like my-caption.jpg.b64.txt) and decodes them into
+    the gallery folder first. If no photos exist, no gallery page or
+    navigation entry is created.
+    """
+    import base64
+    gal = os.path.join("assets", "img", "gallery")
+    b64dir = os.path.join("assets", "img", "gallery-b64")
+    if os.path.isdir(b64dir):
+        os.makedirs(gal, exist_ok=True)
+        for f in os.listdir(b64dir):
+            if not f.endswith(".b64.txt"):
+                continue
+            target = os.path.join(gal, f[:-8])
+            if os.path.exists(target):
+                continue
+            raw = open(os.path.join(b64dir, f), encoding="utf-8").read()
+            with open(target, "wb") as out:
+                out.write(base64.b64decode("".join(raw.split())))
+    exts = (".jpg", ".jpeg", ".png", ".webp")
+    photos = []
+    if os.path.isdir(gal):
+        photos = sorted(
+            [f for f in os.listdir(gal) if f.lower().endswith(exts)],
+            reverse=True)
+    page = os.path.join("content", "gallery.html")
+    if not photos:
+        if os.path.exists(page):
+            os.remove(page)
+        return
+    from PIL import Image
+    thumbs = os.path.join(gal, "thumbs")
+    os.makedirs(thumbs, exist_ok=True)
+    figures = []
+    for f in photos:
+        stem = os.path.splitext(f)[0]
+        thumb_name = stem + ".jpg"
+        thumb_path = os.path.join(thumbs, thumb_name)
+        if not os.path.exists(thumb_path):
+            img = Image.open(os.path.join(gal, f))
+            img = img.convert("RGB")
+            img.thumbnail((900, 1400))
+            img.save(thumb_path, "JPEG", quality=84, optimize=True)
+        cap = caption_from(f)
+        figures.append(
+            '      <figure>\n'
+            '        <img src="{{root}}assets/img/gallery/thumbs/%s" data-full="{{root}}assets/img/gallery/%s" alt="%s" loading="lazy">\n'
+            '        <figcaption>%s</figcaption>\n'
+            '      </figure>' % (thumb_name, f, cap, cap))
+    body = (
+        "title: Gallery | Ahmad A. Idris\n"
+        "desc: Photographs from Ahmad A. Idris's work and journey across education, technology and social innovation in the UK and Nigeria.\n"
+        "out: gallery.html\n"
+        "---\n"
+        '<section class="page-hero">\n'
+        '  <div class="wrap">\n'
+        '    <span class="kicker">Gallery</span>\n'
+        '    <h1>The work, in pictures</h1>\n'
+        '    <p>Moments from classrooms, stages, workshops and the road: the people and places behind the story this site tells.</p>\n'
+        '  </div>\n'
+        '</section>\n\n'
+        '<section class="section">\n'
+        '  <div class="wrap">\n'
+        '    <h2 class="visually-hidden">Photographs</h2>\n'
+        '    <div class="gallery-grid">\n'
+        + "\n".join(figures) + "\n"
+        '    </div>\n'
+        '  </div>\n'
+        '</section>\n')
+    open(page, "w", encoding="utf-8").write(body)
+    print("gallery built with", len(photos), "photos")
 
 
 def bez(p0, p1, p2, p3, n=200):
