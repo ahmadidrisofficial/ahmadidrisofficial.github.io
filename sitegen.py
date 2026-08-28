@@ -20,7 +20,7 @@ import sys
 
 def main():
     env = dict(os.environ)
-    env.setdefault("BASE_URL", "https://ahmadidrisofficial.github.io")
+    env.setdefault("BASE_URL", "https://www.ahmadidrisofficial.com")
     subprocess.check_call([sys.executable, "build.py"], env=env)
 
     key = None
