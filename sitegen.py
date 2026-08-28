@@ -23,16 +23,19 @@ def main():
     env.setdefault("BASE_URL", "https://ahmadidrisofficial.github.io")
     subprocess.check_call([sys.executable, "build.py"], env=env)
 
-    contact = open("contact.html", encoding="utf-8").read()
     key = None
     if os.path.exists("w3f_key.txt"):
         key = open("w3f_key.txt", encoding="utf-8").read().strip()
-    if key:
-        contact = contact.replace("W3F_ACCESS_KEY", key)
-    else:
-        contact = re.sub("<!-- FORM-START -->.*?<!-- FORM-END -->", "",
-                         contact, flags=re.S)
-    open("contact.html", "w", encoding="utf-8").write(contact)
+    for page in ["contact.html", "pathways.html"]:
+        if not os.path.exists(page):
+            continue
+        text = open(page, encoding="utf-8").read()
+        if key:
+            text = text.replace("W3F_ACCESS_KEY", key)
+        else:
+            text = re.sub("<!-- FORM-START -->.*?<!-- FORM-END -->", "",
+                          text, flags=re.S)
+        open(page, "w", encoding="utf-8").write(text)
 
     try:
         make_images()
