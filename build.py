@@ -131,7 +131,14 @@ TEMPLATE = """<!DOCTYPE html>
 </html>
 """
 
+def nav_items_for_build():
+    nav = list(NAV)
+    if os.path.exists(os.path.join(ROOT, "content", "gallery.html")):
+        nav.insert(5, ("gallery.html", "Gallery"))
+    return nav
+
 def build():
+    nav_list = nav_items_for_build()
     content_dir = os.path.join(ROOT, "content")
     for name in sorted(os.listdir(content_dir)):
         if not name.endswith(".html"):
@@ -149,7 +156,7 @@ def build():
                       '<script type="application/ld+json">%s</script>') % (
                 PERSON_JSONLD % {"base": BASE_URL}, WEBSITE_JSONLD % {"base": BASE_URL})
         nav_items = []
-        for href, label in NAV:
+        for href, label in nav_list:
             current = ' aria-current="page"' if href == out else ""
             nav_items.append('        <li><a href="%s%s"%s>%s</a></li>' % (root, href, current, label))
         page = TEMPLATE % {
@@ -173,6 +180,8 @@ def sitemap_and_robots():
              "case-studies/allon-fasaha.html", "case-studies/techxplorer.html",
              "case-studies/digital-skills.html", "case-studies/higher-education.html",
              "speaking.html", "pathways.html", "writing.html", "contact.html", "privacy.html"]
+    if os.path.exists(os.path.join(ROOT, "content", "gallery.html")):
+        pages.insert(9, "gallery.html")
     urls = "\n".join(
         "  <url><loc>%s/%s</loc></url>" % (BASE_URL, p) for p in pages)
     with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
