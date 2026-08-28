@@ -38,7 +38,7 @@ PERSON_JSONLD = """{
   "worksFor": {"@type": "Organization", "name": "Fairfield School of Business"},
   "alumniOf": {"@type": "CollegeOrUniversity", "name": "University of Birmingham"},
   "knowsAbout": ["Education technology", "Higher education", "Digital skills", "Social innovation", "Product development"],
-  "sameAs": ["https://www.linkedin.com/in/ahmadidris001/"],
+  "sameAs": ["https://www.linkedin.com/in/ahmadidris001/", "https://www.instagram.com/ahmadidris_ai/", "https://www.tiktok.com/@a_idrisofficial"],
   "address": {"@type": "PostalAddress", "addressLocality": "Leicester", "addressCountry": "GB"}
 }"""
 
@@ -115,6 +115,8 @@ TEMPLATE = """<!DOCTYPE html>
         <ul>
           <li><a href="%(root)scontact.html">Contact</a></li>
           <li><a href="https://www.linkedin.com/in/ahmadidris001/" rel="me noopener" target="_blank">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          <li><a href="https://www.instagram.com/ahmadidris_ai/" rel="me noopener" target="_blank">Instagram<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          <li><a href="https://www.tiktok.com/@a_idrisofficial" rel="me noopener" target="_blank">TikTok<span class="visually-hidden"> (opens in a new tab)</span></a></li>
         </ul>
       </div>
     </div>
