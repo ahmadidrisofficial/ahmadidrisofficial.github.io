@@ -23,6 +23,7 @@ NAV = [
     ("case-studies.html", "Case studies"),
     ("speaking.html", "Speaking"),
     ("pathways.html", "Pathways"),
+    ("build.html", "Build"),
     ("writing.html", "Notes"),
     ("about.html", "About"),
     ("contact.html", "Contact"),
@@ -107,6 +108,7 @@ TEMPLATE = """<!DOCTYPE html>
           <li><a href="%(root)scase-studies.html">Case studies</a></li>
           <li><a href="%(root)sspeaking.html">Speaking and advisory</a></li>
           <li><a href="%(root)spathways.html">Pathways weekly</a></li>
+          <li><a href="%(root)sbuild.html">AI on a Naira Budget</a></li>
           <li><a href="%(root)swriting.html">Notes and research</a></li>
         </ul>
       </div>
@@ -134,7 +136,7 @@ TEMPLATE = """<!DOCTYPE html>
 def nav_items_for_build():
     nav = list(NAV)
     if os.path.exists(os.path.join(ROOT, "content", "gallery.html")):
-        nav.insert(5, ("gallery.html", "Gallery"))
+        nav.insert(6, ("gallery.html", "Gallery"))
     return nav
 
 def build():
@@ -179,9 +181,11 @@ def sitemap_and_robots():
     pages = ["", "about.html", "work.html", "case-studies.html",
              "case-studies/allon-fasaha.html", "case-studies/techxplorer.html",
              "case-studies/digital-skills.html", "case-studies/higher-education.html",
-             "speaking.html", "pathways.html", "writing.html", "contact.html", "privacy.html"]
+             "speaking.html", "pathways.html", "build.html",
+             "build/marking-and-lesson-prep.html",
+             "writing.html", "contact.html", "privacy.html"]
     if os.path.exists(os.path.join(ROOT, "content", "gallery.html")):
-        pages.insert(9, "gallery.html")
+        pages.insert(11, "gallery.html")
     urls = "\n".join(
         "  <url><loc>%s/%s</loc></url>" % (BASE_URL, p) for p in pages)
     with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
