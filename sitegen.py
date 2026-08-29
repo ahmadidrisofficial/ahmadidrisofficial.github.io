@@ -53,16 +53,41 @@ def main():
     for p in os.listdir("."):
         if p.endswith(".html"):
             shutil.copy(p, os.path.join(out, p))
-    os.makedirs(os.path.join(out, "case-studies"), exist_ok=True)
-    for p in os.listdir("case-studies"):
-        if p.endswith(".html"):
-            shutil.copy(os.path.join("case-studies", p),
-                        os.path.join(out, "case-studies", p))
+    for sub in output_subdirs():
+        if not os.path.isdir(sub):
+            continue
+        os.makedirs(os.path.join(out, sub), exist_ok=True)
+        for p in os.listdir(sub):
+            if p.endswith(".html"):
+                shutil.copy(os.path.join(sub, p), os.path.join(out, sub, p))
     shutil.copytree("assets", os.path.join(out, "assets"),
                     ignore=shutil.ignore_patterns("gallery-b64"))
     for extra in ["favicon.svg", "sitemap.xml", "robots.txt"]:
         shutil.copy(extra, os.path.join(out, extra))
     print("site written to _site/")
+
+
+def output_subdirs():
+    """Subdirectories that pages are generated into, read from content headers.
+
+    Each file in content/ declares its output path on an "out:" line. Any
+    directory part of that path is a folder the built site needs copied, so
+    new sections work without editing this script.
+    """
+    dirs = set()
+    if not os.path.isdir("content"):
+        return dirs
+    for f in os.listdir("content"):
+        if not f.endswith(".html"):
+            continue
+        with open(os.path.join("content", f), encoding="utf-8") as fh:
+            for line in fh:
+                if line.startswith("out:"):
+                    part = os.path.dirname(line.split(":", 1)[1].strip())
+                    if part:
+                        dirs.add(part)
+                    break
+    return dirs
 
 
 def caption_from(name):
