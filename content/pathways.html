@@ -46,6 +46,16 @@ out: pathways.html
             <p class="hint">One short email a week. Unsubscribe any time by replying with the word unsubscribe. See the <a href="{{root}}privacy.html">privacy notice</a>.</p>
           </div>
           <div>
+            <label for="sub-interest">What would you like more of?</label>
+            <select id="sub-interest" name="interest" required>
+              <option value="" selected disabled>Choose one</option>
+              <option value="UK events and opportunities">UK events and opportunities</option>
+              <option value="Building in Nigeria">Building in Nigeria</option>
+              <option value="Both">Both</option>
+            </select>
+            <p class="hint">Pathways covers both today. This tells me what to weight it towards.</p>
+          </div>
+          <div>
             <button class="btn btn-solid" type="submit" style="border:2px solid var(--green); cursor:pointer; font-family:inherit;">Subscribe</button>
           </div>
         </form>
