@@ -195,6 +195,28 @@ img, svg { max-width: 100%; height: auto; }
   pointer-events: none;
   opacity: 0.5;
 }
+.hero-grid {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+.hero-portrait {
+  margin: 0 auto;
+  max-width: 260px;
+  order: 2;
+}
+.hero-portrait img {
+  display: block;
+  width: 100%;
+  border-radius: 16px;
+  border: 3px solid rgba(228, 194, 126, 0.5);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+@media (min-width: 820px) {
+  .hero-grid { grid-template-columns: 1.2fr 0.8fr; gap: 3rem; }
+  .hero-portrait { margin: 0; max-width: 340px; justify-self: end; order: 0; }
+}
+
 .kicker {
   display: inline-block;
   font-size: 0.85rem;
