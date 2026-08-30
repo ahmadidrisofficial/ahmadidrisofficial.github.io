@@ -157,7 +157,6 @@ def make_gallery():
         "---\n"
         '<section class="page-hero">\n'
         '  <div class="wrap">\n'
-        '    <span class="kicker">Gallery</span>\n'
         '    <h1>The work, in pictures</h1>\n'
         '    <p>Moments from classrooms, stages, workshops and the road: the people and places behind the story this site tells.</p>\n'
         '  </div>\n'
