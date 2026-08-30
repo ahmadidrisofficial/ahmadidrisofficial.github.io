@@ -18,13 +18,9 @@ BASE_URL = os.environ.get("BASE_URL", "https://SITE_BASE_URL")
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 NAV = [
-    ("index.html", "Home"),
     ("work.html", "Work"),
-    ("case-studies.html", "Case studies"),
-    ("speaking.html", "Speaking"),
-    ("pathways.html", "Pathways"),
     ("build.html", "Build"),
-    ("writing.html", "Notes"),
+    ("writing.html", "Writing"),
     ("about.html", "About"),
     ("contact.html", "Contact"),
 ]
@@ -72,8 +68,8 @@ TEMPLATE = """<!DOCTYPE html>
 <link rel="apple-touch-icon" href="%(root)sassets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap"></noscript>
 <link rel="stylesheet" href="%(root)sassets/css/styles.css">
 <script>document.documentElement.classList.remove('no-js');</script>
 %(jsonld)s
@@ -99,10 +95,10 @@ TEMPLATE = """<!DOCTYPE html>
     <div class="footer-grid">
       <div>
         <a class="brand" href="%(root)sindex.html">Ahmad A. Idris</a>
-        <p style="margin-top:0.8rem; max-width:22rem; color:#C9C2B0;">Educator, technology builder and social innovation practitioner working across the UK and Africa.</p>
+        <p style="margin-top:0.8rem; max-width:22rem;">Educator, technology builder and social innovation practitioner working across the UK and Africa.</p>
       </div>
       <div>
-        <h2 style="font-size:1rem; color:#F5EFE3;">Explore</h2>
+        <h2>Explore</h2>
         <ul>
           <li><a href="%(root)swork.html">Work and impact</a></li>
           <li><a href="%(root)scase-studies.html">Case studies</a></li>
@@ -110,10 +106,11 @@ TEMPLATE = """<!DOCTYPE html>
           <li><a href="%(root)spathways.html">Pathways weekly</a></li>
           <li><a href="%(root)sbuild.html">AI on a Naira Budget</a></li>
           <li><a href="%(root)swriting.html">Notes and research</a></li>
+          <li><a href="%(root)sgallery.html">Gallery</a></li>
         </ul>
       </div>
       <div>
-        <h2 style="font-size:1rem; color:#F5EFE3;">Connect</h2>
+        <h2>Connect</h2>
         <ul>
           <li><a href="%(root)scontact.html">Contact</a></li>
           <li><a href="https://www.linkedin.com/in/ahmadidris001/" rel="me noopener" target="_blank">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a></li>
@@ -136,7 +133,7 @@ TEMPLATE = """<!DOCTYPE html>
 def nav_items_for_build():
     nav = list(NAV)
     if os.path.exists(os.path.join(ROOT, "content", "gallery.html")):
-        nav.insert(6, ("gallery.html", "Gallery"))
+        pass
     return nav
 
 def build():
