@@ -139,11 +139,18 @@ def make_gallery():
         stem = os.path.splitext(f)[0]
         thumb_name = stem + ".jpg"
         thumb_path = os.path.join(thumbs, thumb_name)
-        if not os.path.exists(thumb_path):
-            img = Image.open(os.path.join(gal, f))
-            img = img.convert("RGB")
-            img.thumbnail((900, 1400))
-            img.save(thumb_path, "JPEG", quality=84, optimize=True)
+        src_path = os.path.join(gal, f)
+        # Always rebuild. Modification times are unreliable in a fresh CI
+        # checkout, and a cached thumbnail meant a replaced photo kept showing
+        # the old one. One small image per photo costs nothing to redo.
+        img = Image.open(src_path)
+        img = img.convert("RGB")
+        img.thumbnail((640, 900))
+        img.save(thumb_path, "JPEG", quality=82, optimize=True, progressive=True)
+        # A small source can produce a "thumbnail" larger than itself. If it
+        # does, serve the original and save the visitor the download.
+        if os.path.getsize(thumb_path) >= os.path.getsize(src_path):
+            shutil.copyfile(src_path, thumb_path)
         cap = caption_from(f)
         figures.append(
             '      <figure>\n'
