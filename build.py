@@ -128,7 +128,10 @@ TEMPLATE = """<!DOCTYPE html>
 <header class="site-header">
   <div class="wrap">
     <a class="brand" href="%(root)sindex.html">Ahmad A. Idris</a>
-    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <div class="header-actions">
+      %(pathways_cta_mobile)s
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    </div>
     <nav class="site-nav" id="site-nav" aria-label="Main navigation">
       <ul>
 %(nav)s
@@ -214,6 +217,15 @@ def build():
         for href, label in NAV:
             current = ' aria-current="page"' if href == target else ""
             nav_items.append('        <li><a href="%s%s"%s>%s</a></li>' % (root, href, current, label))
+        # Pathways is a separate call to action, not a sixth nav item: it was
+        # easy to miss living only in the footer, so it rides along in the
+        # header on every page. It appears twice in the markup on purpose:
+        # once inside the collapsible nav for desktop, and once as a fixed
+        # button beside the mobile menu toggle, each hidden by CSS on the
+        # breakpoint the other one covers.
+        pathways_current = ' aria-current="page"' if out == "pathways.html" else ""
+        nav_items.append('        <li class="nav-cta-item"><a class="nav-cta" href="%spathways.html#join"%s>Join Pathways</a></li>' % (root, pathways_current))
+        pathways_cta_mobile = '<a class="nav-cta nav-cta-mobile" href="%spathways.html#join"%s>Join Pathways</a>' % (root, pathways_current)
 
         gallery_li = ('          <li><a href="%sgallery.html">Gallery</a></li>' % root) if gallery else ""
 
@@ -226,6 +238,7 @@ def build():
             "fonts": html.escape(FONTS, quote=True),
             "ogtype": "article" if is_article else "website",
             "nav": "\n".join(nav_items),
+            "pathways_cta_mobile": pathways_cta_mobile,
             "gallery_li": gallery_li,
             "body": body.replace("{{root}}", root),
             "jsonld": jsonld,
