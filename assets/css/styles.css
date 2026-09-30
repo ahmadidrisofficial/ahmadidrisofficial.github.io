@@ -179,6 +179,38 @@ img { max-width: 100%; height: auto; display: block; }
    inside a case study can still see they are in Work */
 .site-nav a[aria-current="page"] { border-bottom-color: var(--indigo); color: var(--indigo); }
 
+/* Pathways gets a filled button rather than a plain link, on every page,
+   so the newsletter is never more than one glance away. It is marked up
+   twice (once in the nav, once as a fixed header button) and each copy is
+   hidden on the breakpoint where the other one is visible, so only one
+   ever shows at a time. */
+.nav-cta {
+  background: var(--indigo);
+  color: var(--paper);
+  border-bottom: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  min-height: 40px;
+  display: inline-flex; align-items: center;
+  text-decoration: none;
+  font-size: 1.0625rem;
+  transition: background 180ms var(--ease);
+}
+.nav-cta:hover { background: var(--indigo-dp); color: var(--paper); border-bottom: none; }
+.nav-cta[aria-current="page"] { color: var(--paper); border-bottom: none; }
+/* .site-nav a is a higher-specificity rule (element plus class) that would
+   otherwise win over the plain .nav-cta class and paint the button's text
+   ink instead of paper, so it is restated here at matching specificity. */
+.site-nav a.nav-cta,
+.site-nav a.nav-cta:hover,
+.site-nav a.nav-cta[aria-current="page"] {
+  color: var(--paper);
+  border-bottom: none;
+}
+
+.header-actions { display: flex; align-items: center; gap: 0.7rem; }
+.nav-cta-mobile { display: none; }
+
 @media (max-width: 820px) {
   .nav-toggle { display: block; }
   .site-nav { display: none; width: 100%; }
@@ -186,6 +218,9 @@ img { max-width: 100%; height: auto; display: block; }
   .site-header .wrap { flex-wrap: wrap; }
   .site-nav ul { flex-direction: column; gap: 0; padding-bottom: 0.75rem; }
   .site-nav a { display: block; padding: 0.85rem 0; border-bottom: 1px solid var(--rule); }
+  /* The fixed mobile button replaces the in-menu copy, so it is not shown twice */
+  .nav-cta-item { display: none; }
+  .nav-cta-mobile { display: inline-flex; padding: 0.5rem 0.9rem; font-size: 1rem; }
 }
 
 /* The plate: every content photograph is matted, like a tipped-in book plate */
